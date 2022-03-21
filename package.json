@@ -1,6 +1,8 @@
 {
   "name": "ThunderCMS",
   "version": "1.0.0",
+  "description": "ThunderCMS is a simple CMS for Node.js",
+  "main": "src/index.js",
   "dependencies": {
     "express": "^4.17.3"
   }

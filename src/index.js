@@ -22,3 +22,24 @@
  * // Currently infected with malware, will re-add once I can pin it to 9.1.2
  * // const IPC = require('node-ipc');                         /*
  */
+
+// Internal dependencies
+
+// Classes
+module.exports = class {
+    constructor (config) {
+        // Load configuration from provided config in the constructor, if keys exist replace the default values, else leave them as they are.
+        for (let key in config) {
+            if (config.hasOwnProperty(key)) {
+                this[key] = config[key];
+            }
+        }
+        this.configData = config;
+        // bind all internal methods to this
+        require('./config/index.js')(this);
+    }
+
+    start () {
+
+    }
+}

@@ -1,0 +1,16 @@
+{
+  "app": {
+    "hostname": "localhost",
+    "port": 8080
+  },
+  "database": {
+    "type": "json",
+    "filePath": "./cms/cms.json",
+    "fileEncoding": "utf8"
+  },
+  "logs": {
+    "logLevel": "info",
+    "filePath": "./cms/latest.log",
+    "fileEncoding": "utf8"
+  }
+}

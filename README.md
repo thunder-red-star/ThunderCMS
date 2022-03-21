@@ -11,3 +11,5 @@ TODO:
 - [ ] API system
 - [ ] Multiple templating engines
 - [ ] Docs
+- [ ] Plugin system
+- [ ] Theme system

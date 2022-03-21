@@ -10,6 +10,6 @@ methods = [
 
 module.exports = function (cms) {
     for (const method of methods) {
-        cms["config"][method] = require(`./${method}`)(cms);
+        require(`./${method}`)(cms);
     }
 }

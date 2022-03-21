@@ -36,3 +36,19 @@ The path to the log file. Default: `./cms/latest.log`
 
 ### `fileEncoding`
 The encoding of the log file. Default: `utf8`
+
+# Methods
+
+## Config
+
+### `get(key)`
+Get a configuration value.
+
+### `set(key, value)`
+Set a configuration value.
+
+### `loadConfigFile(filePath)`
+Load a configuration file, providing an absolute or relative path.
+
+### `reload()`
+Reload the CMS to use the latest configuration.

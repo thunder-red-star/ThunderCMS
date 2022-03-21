@@ -37,6 +37,9 @@ The path to the log file. Default: `./cms/latest.log`
 ### `fileEncoding`
 The encoding of the log file. Default: `utf8`
 
+### `exitOnError`
+If `true`, the application will exit when an error is logged. Default: `true`
+
 # Methods
 
 ## Config

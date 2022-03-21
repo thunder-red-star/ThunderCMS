@@ -1,9 +1,10 @@
 const fs = require('fs');
 
 methods = [
-    "set",
-    "get",
-    "loadConfigFile",
+    "error",
+    "warn",
+    "info",
+    "debug",
 ];
 
 module.exports = function (cms) {

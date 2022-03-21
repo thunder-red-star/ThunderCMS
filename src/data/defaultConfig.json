@@ -11,6 +11,7 @@
   "logs": {
     "logLevel": "info",
     "filePath": "./cms/latest.log",
-    "fileEncoding": "utf8"
+    "fileEncoding": "utf8",
+    "exitOnError": true
   }
 }

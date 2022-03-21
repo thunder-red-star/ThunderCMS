@@ -1,6 +1,8 @@
-module.exports = function get(cms) {
+const chalk = require('chalk'); // Chalk@4 for CJS
+
+module.exports = function (cms) {
     cms['logger']['error'] = function (message) {
-        console.error(message);
+        console.log(chalk.red("[ERROR] " + message));
         if (cms.config.get('logger.exitOnError')) {
             process.exit(1);
         }

@@ -3,7 +3,8 @@ const fs = require('fs');
 methods = [
     "set",
     "get",
-    "loadConfigFile",
+    "loadJSON",
+    "loadConfigFile"
 ];
 
 module.exports = function (cms) {

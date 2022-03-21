@@ -23,23 +23,31 @@
  * // const IPC = require('node-ipc');                         /*
  */
 
-// Internal dependencies
+const loadModule = (cms, module) => {
+    require('./' + module + '/index.js')(cms);
+    cms.logger.debug('Loaded module ' + module);
+}
 
 // Classes
 module.exports = class {
-    constructor (config) {
+    constructor (config = {}) {
         // Load configuration from provided config in the constructor, if keys exist replace the default values, else leave them as they are.
-        for (let key in config) {
-            if (config.hasOwnProperty(key)) {
-                this[key] = config[key];
-            }
-        }
-        this.configData = config;
         // bind all internal methods to this
-        require('./config/index.js')(this);
+        loadModule(this, 'logger');
+	loadModule(this, 'config');	
+	// Loads provided JSON into config.
+	this.config.loadJSON(config);
     }
 
     start () {
-
+	this.app = express();
+        // Bind to port specified in configData
+        // Create a random endpoint to test if the server is running
+	this.app.get('/status', (req, res) => {
+	    res.send('Server is running');
+	});
+	this.app.listen(this.config.port, () => {
+	    this.logger.info('Running on port ' + this.config.port);
+	});
     }
 }

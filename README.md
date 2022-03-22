@@ -2,7 +2,8 @@
 
 A high-level, simple, performant, and easy-to-use CMS using NodeJS.
 
-TODO: 
+TODO:
+
 - [x] Readme
 - [x] License
 - [x] Base server

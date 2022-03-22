@@ -6,8 +6,10 @@
 
 // These are all tentative, and will be changed as we go along. To activate a dependency, put a slash directly after the first asterisk in the line.
 /*
- */ const express = require('express');                        /*
- */ const chalk = require('chalk');                            /*
+ */ const express = require("express");
+/*
+ */ const chalk = require("chalk");
+/*
  * const bodyParser = require('body-parser');                  /*
  * const cookieParser = require('cookie-parser');              /*
  * const session = require('express-session');                 /*
@@ -25,49 +27,87 @@
  */
 
 // Do not place logger or config modules here, they're loaded before everything else.
-modules = [
-    
-]
+modules = ["endpoints"];
 
 // Classes
 module.exports = class {
-    constructor (config = {}) {
-        // Load configuration from provided config in the constructor, if keys exist replace the default values, else leave them as they are.
-        // bind all internal methods to this
-        this.loadModule.bind(this);
+  constructor(config = {}) {
+    // Load configuration from provided config in the constructor, if keys exist replace the default values, else leave them as they are.
+    // bind all internal methods to this
+    this.loadModule.bind(this);
 
-	// Must run these seperately, otherwise errors will pop up about config not being defined.
-	this.loadModule("logger");
-	if (config.logs && config.logs.logLevel == "debug") console.log(chalk.blue("[DEBUG] " + 'Loaded module logger'));
-        this.loadModule("config");
-        if (config.logs && config.logs.logLevel == "debug") console.log(chalk.blue("[DEBUG] " + 'Loaded module config'));
-	
-	// Loads all other modules   
-	for (const module of modules) {
-	    this.loadModule(module);
-	};
-
-	// Loads provided JSON into config.
-	this.config.loadJSON(config);
+    // Must run these seperately, otherwise errors will pop up about config not being defined.
+    try {
+      this.loadModule("logger");
+      if (
+        (config.logs && config.logs.logLevel == "debug") ||
+        config.logs.logLevel == "info"
+      )
+        console.log("[INFO] " + "Loaded module logger");
+      if (config.logs && config.logs.logLevel == "debug")
+        console.log(
+          "[DEBUG] " +
+            "Module logger has " +
+            Object.keys(this.logger).length +
+            " methods: " +
+            Object.keys(this.logger)
+        );
+    } catch (err) {
+      console.log(chalk.red("[ERROR] Failed to load logger module: " + err));
+      process.exit(1);
     }
 
-    loadModule (module) {
-    	require('./' + module + "/index.js")(this);
-	if (module !== "logger" && module !== "config") this.logger.debug('Loaded module ' + module);
+    try {
+      this.loadModule("config");
+      if (
+        (config.logs && config.logs.logLevel == "debug") ||
+        config.logs.logLevel == "info"
+      )
+        console.log("[INFO] " + "Loaded module config");
+      if (config.logs && config.logs.logLevel == "debug")
+        console.log(
+          "[DEBUG] " +
+            "Module config has " +
+            Object.keys(this.config).length +
+            " methods: " +
+            Object.keys(this.config)
+        );
+    } catch (err) {
+      console.log(chalk.red("[ERROR] Failed to load config module: " + err));
+      process.exit(1);
     }
 
-    start () {
-	this.app = express();
-        // Bind to port specified in configData
-        // Create a random endpoint to test if the server is running
-	this.app.get('/status', (req, res) => {
-	    res.send('Server is running');
-	});
+    this.app = express();
 
-	let port = this.config.get(['app', 'port']);
+    // Loads provided JSON into config.
+    this.config.loadJSON(config);
 
-	this.app.listen(port, () => {
-	    this.logger.info('Running on port ' + port);
-	});
+    // Loads all other modules
+    for (const module of modules) {
+      this.loadModule(module);
     }
-}
+  }
+
+  loadModule(module) {
+    require("./" + module + "/index.js")(this);
+    if (module !== "logger" && module !== "config")
+      this.logger.info("Loaded module " + module);
+    if (module !== "logger" && module !== "config")
+      this.logger.debug(
+        "Module " +
+          module +
+          " has " +
+          Object.keys(this[module]).length +
+          " methods: " +
+          Object.keys(this[module])
+      );
+  }
+
+  start() {
+    let port = this.config.get(["app", "port"]);
+
+    this.app.listen(port, () => {
+      this.logger.info("Running on port " + port);
+    });
+  }
+};

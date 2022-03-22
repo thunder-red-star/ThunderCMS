@@ -27,5 +27,6 @@ To set the log level, set the `logs.logLevel` property in the config to one of t
 - `debug`
 - `info`
 - `warn`
-- `error`  
-  The program will display all messages with a level equal to or higher than the set log level.
+- `error`
+
+The program will display all messages with a level equal to or higher than the set log level.

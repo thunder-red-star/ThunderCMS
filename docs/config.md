@@ -65,6 +65,6 @@ Set a configuration value.
 
 Load a configuration file, providing an absolute or relative path.
 
-### `loadJSON`
+### `loadJSON(json)`
 
 Load configuration in JSON form.

@@ -65,6 +65,6 @@ Set a configuration value.
 
 Load a configuration file, providing an absolute or relative path.
 
-### `reload()`
+### `loadJSON`
 
-Reload the CMS to use the latest configuration.
+Load configuration in JSON form.

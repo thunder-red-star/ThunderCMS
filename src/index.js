@@ -146,7 +146,7 @@ module.exports = class {
   start() {
     let port = this.config.get(["app", "port"]);
 
-    this.app.listen(port, '0.0.0.0', () => {
+    this.app.listen(port, "0.0.0.0", () => {
       this.logger.info("Running on port " + port);
     });
   }

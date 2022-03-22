@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "ThunderCMS is a simple CMS for Node.js",
   "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
   "dependencies": {
     "chalk": "^4.1.2",
     "express": "^4.17.3"

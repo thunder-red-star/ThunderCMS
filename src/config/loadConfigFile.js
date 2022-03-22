@@ -27,4 +27,5 @@ module.exports = function (cms) {
             cms['configData'] = defaultConfig;
         }
     };
+    return cms;
 }

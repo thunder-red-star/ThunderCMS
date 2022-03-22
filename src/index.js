@@ -7,6 +7,7 @@
 // These are all tentative, and will be changed as we go along. To activate a dependency, put a slash directly after the first asterisk in the line.
 /*
  */ const express = require('express');                        /*
+ */ const chalk = require('chalk');                            /*
  * const bodyParser = require('body-parser');                  /*
  * const cookieParser = require('cookie-parser');              /*
  * const session = require('express-session');                 /*
@@ -23,20 +24,36 @@
  * // const IPC = require('node-ipc');                         /*
  */
 
-const loadModule = (cms, module) => {
-    require('./' + module + '/index.js')(cms);
-    cms.logger.debug('Loaded module ' + module);
-}
+// Do not place logger or config modules here, they're loaded before everything else.
+modules = [
+    
+]
 
 // Classes
 module.exports = class {
     constructor (config = {}) {
         // Load configuration from provided config in the constructor, if keys exist replace the default values, else leave them as they are.
         // bind all internal methods to this
-        loadModule(this, 'logger');
-	loadModule(this, 'config');	
+        this.loadModule.bind(this);
+
+	// Must run these seperately, otherwise errors will pop up about config not being defined.
+	this.loadModule("logger");
+	if (config.logs && config.logs.logLevel == "debug") console.log(chalk.blue("[DEBUG] " + 'Loaded module logger'));
+        this.loadModule("config");
+        if (config.logs && config.logs.logLevel == "debug") console.log(chalk.blue("[DEBUG] " + 'Loaded module config'));
+	
+	// Loads all other modules   
+	for (const module of modules) {
+	    this.loadModule(module);
+	};
+
 	// Loads provided JSON into config.
 	this.config.loadJSON(config);
+    }
+
+    loadModule (module) {
+    	require('./' + module + "/index.js")(this);
+	if (module !== "logger" && module !== "config") this.logger.debug('Loaded module ' + module);
     }
 
     start () {
@@ -46,8 +63,11 @@ module.exports = class {
 	this.app.get('/status', (req, res) => {
 	    res.send('Server is running');
 	});
-	this.app.listen(this.config.port, () => {
-	    this.logger.info('Running on port ' + this.config.port);
+
+	let port = this.config.get(['app', 'port']);
+
+	this.app.listen(port, () => {
+	    this.logger.info('Running on port ' + port);
 	});
     }
 }

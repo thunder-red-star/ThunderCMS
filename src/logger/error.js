@@ -7,4 +7,5 @@ module.exports = function (cms) {
             process.exit(1);
         }
     }
+    return cms;
 };

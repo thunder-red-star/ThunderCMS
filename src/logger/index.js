@@ -8,7 +8,9 @@ methods = [
 ];
 
 module.exports = function (cms) {
+    cms.logger = {};
     for (const method of methods) {
-        require(`./${method}`)(cms);
+        cms = require(`./${method}`)(cms);
     }
+    return cms;
 }
